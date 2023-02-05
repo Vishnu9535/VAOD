@@ -4,8 +4,8 @@ import argparse
 import imutils
 import cv2
 
-use_gpu = True
-live_video = False
+# use_gpu = True
+# live_video = False
 confidence_level = 0.5
 fps = FPS().start()
 object_name=[]
@@ -21,10 +21,10 @@ def object_detection(path):
 
     net = cv2.dnn.readNetFromCaffe('ssd_files/MobileNetSSD_deploy.prototxt', 'ssd_files/MobileNetSSD_deploy.caffemodel')
 
-    if use_gpu:
-        print("[INFO] setting preferable backend and target to CUDA...")
-        net.setPreferableBackend(cv2.dnn.DNN_BACKEND_CUDA)
-        net.setPreferableTarget(cv2.dnn.DNN_TARGET_CUDA)
+    # if use_gpu:
+    #     print("[INFO] setting preferable backend and target to CUDA...")
+    #     net.setPreferableBackend(cv2.dnn.DNN_BACKEND_CUDA)
+    #     net.setPreferableTarget(cv2.dnn.DNN_TARGET_CUDA)
     
     if live_video:
         vs = cv2.VideoCapture(0)
