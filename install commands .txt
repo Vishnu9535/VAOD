@@ -1,0 +1,6 @@
+Install All the modules mentioned below 
+
+pip install imutils
+pip install opencv-contrib-python
+pip install numpy
+pip install argparse
