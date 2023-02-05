@@ -26,10 +26,8 @@ def object_detection(path):
     #     net.setPreferableBackend(cv2.dnn.DNN_BACKEND_CUDA)
     #     net.setPreferableTarget(cv2.dnn.DNN_TARGET_CUDA)
     
-    if live_video:
-        vs = cv2.VideoCapture(0)
-    else:
-        vs = cv2.VideoCapture(path)
+ 
+    vs = cv2.VideoCapture(path)
 
     while ret:
         ret, frame = vs.read()
