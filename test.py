@@ -14,7 +14,7 @@ CLASSES = ["background", "aeroplane", "bicycle", "bird", "boat",
            "bottle", "bus", "car", "cat", "chair", "cow", "diningtable",
            "dog", "horse", "motorbike", "person", "pottedplant", "sheep",
            "sofa", "train", "tvmonitor",]
-path='sample.mp4'
+path='test.mp4'
 def object_detection(path):
     ret = True
     COLORS = np.random.uniform(0, 255, size=(len(CLASSES), 3))
@@ -37,8 +37,9 @@ def object_detection(path):
             frame = imutils.resize(frame, width=400)
             # print(frame.shape[1])
             (h, w) = frame.shape[:2]
-
+            # print(h,w)
             blob = cv2.dnn.blobFromImage(frame, 0.007843, (300, 300), 127.5)
+            print(blob)
             net.setInput(blob)
             detections = net.forward()
             
