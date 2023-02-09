@@ -32,6 +32,7 @@ def object_detection(path):
     print(vs)
     while ret:
         ret, frame = vs.read()
+        print(ret)
         if ret:
             frame = imutils.resize(frame, width=400)
             (h, w) = frame.shape[:2]
@@ -44,7 +45,7 @@ def object_detection(path):
                 confidence = detections[0, 0, i, 2]
                 if confidence > confidence_level:
                     idx = int(detections[0, 0, i, 1])
-                    print("THE object name is ",CLASSES[idx],"  and accuracy found is :",confidence*100)
+                    # print("THE object name is ",CLASSES[idx],"  and accuracy found is :",confidence*100)
                     object_name.append(CLASSES[idx])
                     accuracy.append(confidence*100)
     # print(len(object_name),len(accuracy))
