@@ -18,7 +18,7 @@ path='sample.mp4'
 def object_detection(path):
     ret = True
     COLORS = np.random.uniform(0, 255, size=(len(CLASSES), 3))
-    
+    # print(len(COLORS))    
 
     net = cv2.dnn.readNetFromCaffe('ssd_files/MobileNetSSD_deploy.prototxt', 'ssd_files/MobileNetSSD_deploy.caffemodel')
 
@@ -29,7 +29,7 @@ def object_detection(path):
     
  
     vs = cv2.VideoCapture(path)
-
+    print(vs)
     while ret:
         ret, frame = vs.read()
         if ret:
