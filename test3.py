@@ -28,7 +28,7 @@ print("[INFO] accessing video stream...")
 if live_video:
     vs = cv2.VideoCapture(0)
 else:
-    vs = cv2.VideoCapture('test.mp4')
+    vs = cv2.VideoCapture('sample.mp4')
 object_name=[]
 accuracy=[]
 while ret:
@@ -41,40 +41,29 @@ while ret:
         # print(blob)
         net.setInput(blob)
         detections = net.forward()
-        prevx=None
-        prevy=None
         direction="unknown"
         for i in np.arange(0, detections.shape[2]):
             confidence = detections[0, 0, i, 2]
             if confidence > confidence_level:
                 idx = int(detections[0, 0, i, 1])
                 box = detections[0, 0, i, 3:7] * np.array([w, h, w, h])
-                (startX, startY, endX, endY) = box.astype("int") 
-                print(frame.shape)   
-                print(startX,startY,endX,endY)
-                if prevx is not None and prevy is not None:
-                    dx=startX-prevx
-                    dy=startY-prevy
-                    if dx>0 and dy>0:
-                        direction="right"
-                    elif dx<0 and dy>0:
-                        direction="left"
-                    elif dx>0 and dy<0:
-                        direction="right"
-                    elif dx<0 and dy<0: 
-                        direction="left"
-                    else:
-                        direction="notknown"
-                    print(direction)
-                prevx=startX
-                prevy=startY
+                (startX, startY, endX, endY) = box.astype("int")
+                # print(startX,startY,endX,endY)
+                
+                # print(frame.shape)   
+                xavg=(startX+endX)/2
+                yavg=(startY+endY)/2
+                if xavg>200:
+                    direction="right"
+                elif xavg<200:
+                    direction="left"
                 label = "{}: {:.2f}%  {}".format(CLASSES[idx], confidence * 100,direction)
                 cv2.rectangle(frame, (startX, startY), (endX, endY), COLORS[idx], 2)
 
                 y = startY - 15 if startY - 15 > 15 else startY + 15
                 cv2.putText(frame, label, (startX, y), cv2.FONT_HERSHEY_SIMPLEX, 0.5, COLORS[idx], 2)
         
-        frame = imutils.resize(frame,height=400)
+        frame = imutils.resize(frame,width=400)
         cv2.imshow('Live detection',frame)
         # print(frame.shape)
         if cv2.waitKey(1)==27:
