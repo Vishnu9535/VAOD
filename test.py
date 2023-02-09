@@ -32,9 +32,10 @@ def object_detection(path):
     print(vs)
     while ret:
         ret, frame = vs.read()
-        print(ret)
+        # print(frame)
         if ret:
             frame = imutils.resize(frame, width=400)
+            # print(frame.shape[1])
             (h, w) = frame.shape[:2]
 
             blob = cv2.dnn.blobFromImage(frame, 0.007843, (300, 300), 127.5)
