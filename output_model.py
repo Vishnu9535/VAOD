@@ -14,11 +14,12 @@ CLASSES = ["background", "aeroplane", "bicycle", "bird", "boat",
            "bottle", "bus", "car", "cat", "chair", "cow", "diningtable",
            "dog", "horse", "motorbike", "person", "pottedplant", "sheep",
            "sofa", "train", "tvmonitor",]
-path='sample.mp4'
+path='sample5.mp4'
 def object_detection(path):
     ret = True
     COLORS = np.random.uniform(0, 255, size=(len(CLASSES), 3))
-    
+    x=0
+    y=0
 
     net = cv2.dnn.readNetFromCaffe('ssd_files/MobileNetSSD_deploy.prototxt', 'ssd_files/MobileNetSSD_deploy.caffemodel')
 
@@ -45,9 +46,12 @@ def object_detection(path):
                 if confidence > confidence_level:
                     idx = int(detections[0, 0, i, 1])
                     print("THE object name is ",CLASSES[idx],"  and accuracy found is :",confidence*100)
+                    x=x+(confidence*100)
+                    y=y+1
                     object_name.append(CLASSES[idx])
                     accuracy.append(confidence*100)
     # print(len(object_name),len(accuracy))
+    print(x/y)
     return object_name,accuracy
 def main():
     object_name,accuracy=object_detection(path)
