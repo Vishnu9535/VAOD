@@ -23,7 +23,6 @@ if use_gpu:
     net.setPreferableBackend(cv2.dnn.DNN_BACKEND_CUDA)
     net.setPreferableTarget(cv2.dnn.DNN_TARGET_CUDA)
 
-
 print("[INFO] accessing video stream...")
 if live_video:
     vs = cv2.VideoCapture(0)
@@ -59,7 +58,7 @@ while ret:
                     direction="left"
                 label = "{}: {:.2f}% {}".format(CLASSES[idx], confidence * 100,direction)
                 cv2.rectangle(frame, (startX, startY), (endX, endY), COLORS[idx], 2)
-
+                
                 y = startY - 15 if startY - 15 > 15 else startY + 15
                 cv2.putText(frame, label, (startX, y), cv2.FONT_HERSHEY_SIMPLEX, 0.5, COLORS[idx], 2)
         

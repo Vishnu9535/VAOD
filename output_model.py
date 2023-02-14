@@ -48,9 +48,10 @@ def object_detection(path):
                     print("THE object name is ",CLASSES[idx],"  and accuracy found is :",confidence*100)
                     x=x+(confidence*100)
                     y=y+1
-                    object_name.append(CLASSES[idx])
+
+
                     accuracy.append(confidence*100)
-    # print(len(object_name),len(accuracy))
+    print(len(object_name),len(accuracy))
     print(x/y)
     return object_name,accuracy
 def main():
