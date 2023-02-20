@@ -63,7 +63,7 @@ while ret:
         
         frame = imutils.resize(frame,width=400)
         cv2.imshow('Live detection',frame)
-        # print(frame.shape)
+        # print(frame.shape) 
         if cv2.waitKey(1)==27:
             break
 
