@@ -48,7 +48,7 @@ while ret:
                 box = detections[0, 0, i, 3:7] * np.array([w, h, w, h])
                 (startX, startY, endX, endY) = box.astype("int")
                 # print(startX,startY,endX,endY)
-                # print(frame.shape)   
+                   # print(frame.shape)
                 xavg=(startX+endX)/2
                 yavg=(startY+endY)/2
                 if xavg>200:

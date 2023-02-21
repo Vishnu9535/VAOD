@@ -17,7 +17,8 @@ CLASSES = ["background", "aeroplane", "bicycle", "bird", "boat",
 COLORS = np.random.uniform(0, 255, size=(len(CLASSES), 3))
 
 net = cv2.dnn.readNetFromCaffe('ssd_files/MobileNetSSD_deploy.prototxt', 'ssd_files/MobileNetSSD_deploy.caffemodel')
-
+object_size = 1
+focal_length = 800.0 
 if use_gpu:
     print("[INFO] setting preferable backend and target to CUDA...")
     net.setPreferableBackend(cv2.dnn.DNN_BACKEND_CUDA)
@@ -61,7 +62,9 @@ while ret:
                     direction="topleft"
                 elif xavg<200 and yavg<112.5:
                     direction="downleft"
-                label = "{}: {:.2f}%  {}".format(CLASSES[idx], confidence * 100,direction)
+                object_pixels = max(w, h)
+                distance = (object_size * focal_length) / object_pixels 
+                label = "{}: {:.2f}%  {} {} 2m".format(CLASSES[idx], confidence * 100,direction,distance)
                 cv2.rectangle(frame, (startX, startY), (endX, endY), COLORS[idx], 2)
 
                 y = startY - 15 if startY - 15 > 15 else startY + 15

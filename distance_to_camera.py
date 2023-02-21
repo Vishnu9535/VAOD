@@ -69,7 +69,8 @@ while ret:
                 cv2.rectangle(frame, (startX, startY), (endX, endY), COLORS[idx], 2)
                  # Calculate the distance to the object
                 object_pixels = max(w, h)
-                distance = (object_size * focal_length) / object_pixels
+                distance = (object_size * focal_length) / object_pixels 
+                
                 cv2.putText(frame, "{:.2f}m".format(distance), (startX, startY - 10),
                     cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 255, 0), 2)
 
