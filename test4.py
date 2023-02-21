@@ -3,6 +3,14 @@ import numpy as np
 import argparse
 import imutils
 import cv2
+from gtts import gTTS
+from io import BytesIO
+from pydub import AudioSegment
+from pydub.playback import play
+import pyttsx3
+import time
+from playsound import playsound
+import os
 
 use_gpu = True
 live_video = False
@@ -64,7 +72,13 @@ while ret:
                     direction="downleft"
                 object_pixels = max(w, h)
                 distance = (object_size * focal_length) / object_pixels 
-                label = "{}: {:.2f}%  {} {} 2m".format(CLASSES[idx], confidence * 100,direction,distance)
+                label = "{}: {:.2f}%  {} {} ".format(CLASSES[idx], confidence * 100,direction,distance)
+                text="THE object name is {}:accuracy found is {:.2f}% {} {} ".format(CLASSES[idx], confidence * 100,direction,distance)
+                language = 'en'
+                audio = gTTS(text=text, lang=language, slow=False)
+                audio.save("x.mp3")
+                playsound("x.mp3")
+                # time.sleep(0.5)
                 cv2.rectangle(frame, (startX, startY), (endX, endY), COLORS[idx], 2)
 
                 y = startY - 15 if startY - 15 > 15 else startY + 15
