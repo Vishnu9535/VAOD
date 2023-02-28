@@ -7,10 +7,11 @@ from gtts import gTTS
 from io import BytesIO
 from pydub import AudioSegment
 from pydub.playback import play
-import pyttsx3
+import pyttsx3 as ts
 import time
 from playsound import playsound
 import os
+import pyttsx
 
 use_gpu = True
 live_video = False
@@ -34,10 +35,11 @@ if use_gpu:
 
 
 print("[INFO] accessing video stream...")
+
 if live_video:
     vs = cv2.VideoCapture(0)
 else:
-    vs = cv2.VideoCapture('test1.mp4')
+    vs = cv2.VideoCapture('test.mp4')
 object_name=[]
 accuracy=[]
 while ret:
@@ -74,18 +76,11 @@ while ret:
                 distance = (object_size * focal_length) / object_pixels 
                 label = "{}: {:.2f}%  {} {} ".format(CLASSES[idx], confidence * 100,direction,distance)
                 text="THE object name is {}:accuracy found is {:.2f}% {} {} ".format(CLASSES[idx], confidence * 100,direction,distance)
-                print(text)
-                eng=pyttsx3.init()
-                rate = eng.getProperty('rate')
-                eng.setProperty('rate', rate)
-                eng.say(text)
-                eng.runAndWait()
-                # time.sleep(0.5)
                 # language = 'en'
                 # audio = gTTS(text=text, lang=language, slow=False)
                 # audio.save("x.mp3")
                 # playsound("x.mp3")
-              
+                # time.sleep(0.5)
                 cv2.rectangle(frame, (startX, startY), (endX, endY), COLORS[idx], 2)
 
                 y = startY - 15 if startY - 15 > 15 else startY + 15
