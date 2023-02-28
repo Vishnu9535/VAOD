@@ -37,7 +37,7 @@ print("[INFO] accessing video stream...")
 if live_video:
     vs = cv2.VideoCapture(0)
 else:
-    vs = cv2.VideoCapture('test.mp4')
+    vs = cv2.VideoCapture('test1.mp4')
 object_name=[]
 accuracy=[]
 while ret:
