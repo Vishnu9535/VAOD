@@ -80,7 +80,7 @@ while ret:
                 eng.setProperty('rate', rate)
                 eng.say(text)
                 eng.runAndWait()
-                # time.sleep(0.5)
+                time.sleep(0.5)
                 # language = 'en'
                 # audio = gTTS(text=text, lang=language, slow=False)
                 # audio.save("x.mp3")
