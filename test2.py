@@ -28,8 +28,8 @@ print("[INFO] accessing video stream...")
 if live_video:
     vs = cv2.VideoCapture(0)
 else:
-    vs = cv2.VideoCapture('test.mp4')
-object_name=[]
+    vs = cv2.VideoCapture('test1.mp4')
+object_name=dict()
 accuracy=[]
 while ret:
     ret, frame = vs.read()
@@ -50,8 +50,8 @@ while ret:
                 idx = int(detections[0, 0, i, 1])
                 box = detections[0, 0, i, 3:7] * np.array([w, h, w, h])
                 (startX, startY, endX, endY) = box.astype("int") 
-                print(frame.shape)   
-                print(startX,startY,endX,endY)
+                # print(frame.shape)   
+                # print(startX,startY,endX,endY)
                 if prevx is not None and prevy is not None:
                     dx=startX-prevx
                     dy=startY-prevy
@@ -65,17 +65,18 @@ while ret:
                         direction="left"
                     else:
                         direction="notknown"
-                    print(direction)
+                    # print(direction)
                 prevx=startX
                 prevy=startY
                 label = "{}: {:.2f}%  {}".format(CLASSES[idx], confidence * 100,direction)
+                object_name[CLASSES[idx]]=confidence * 100
                 cv2.rectangle(frame, (startX, startY), (endX, endY), COLORS[idx], 2)
 
                 y = startY - 15 if startY - 15 > 15 else startY + 15
                 cv2.putText(frame, label, (startX, y), cv2.FONT_HERSHEY_SIMPLEX, 0.5, COLORS[idx], 2)
         
         frame = imutils.resize(frame,height=400)
-        cv2.imshow('Live detection',frame)
+        # cv2.imshow('Live detection',frame)
         # print(frame.shape)
         if cv2.waitKey(1)==27:
             break

@@ -1,1 +1,1 @@
-                # time.sleep(0.5)
+cv2.imshow('Live detection',frame)

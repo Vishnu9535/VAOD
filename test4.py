@@ -3,7 +3,6 @@ import numpy as np
 import argparse
 import imutils
 import cv2
-from gtts import gTTS
 from io import BytesIO
 from pydub import AudioSegment
 from pydub.playback import play
@@ -11,6 +10,14 @@ import pyttsx3
 import time
 from playsound import playsound
 import os
+
+def _counter():
+    i = 0
+    while 1:
+        yield i
+        i += 1
+
+counter = _counter()
 
 use_gpu = True
 live_video = False
@@ -77,11 +84,11 @@ while ret:
                 print(text)
                 eng=pyttsx3.init()
                 rate = eng.getProperty('rate')
-                eng.setProperty('rate', rate)
+                eng.setProperty('rate', rate-15)
                 eng.say(text)
                 eng.runAndWait()
                 time.sleep(0.5)
-                # language = 'en'
+                # # language = 'en'
                 # audio = gTTS(text=text, lang=language, slow=False)
                 # audio.save("x.mp3")
                 # playsound("x.mp3")
@@ -92,7 +99,9 @@ while ret:
                 cv2.putText(frame, label, (startX, y), cv2.FONT_HERSHEY_SIMPLEX, 0.5, COLORS[idx], 2)
         
         frame = imutils.resize(frame,width=400)
-        cv2.imshow('Live detection',frame)
+        # cv2.imshow('Live detection',frame)
+        cv2.imwrite(f"images/outfile_{next(counter)}.jpg", frame)
+        # cv2.imwrite('hi'+str(i)+'.jpg',frame)
         # print(frame.shape)
         if cv2.waitKey(1)==27:
             break

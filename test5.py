@@ -12,6 +12,7 @@ import time
 from playsound import playsound
 import os
 import pyttsx
+import matplotlib as plt
 
 use_gpu = True
 live_video = False
@@ -39,8 +40,8 @@ print("[INFO] accessing video stream...")
 if live_video:
     vs = cv2.VideoCapture(0)
 else:
-    vs = cv2.VideoCapture('test.mp4')
-object_name=[]
+    vs = cv2.VideoCapture('test1.mp4')
+object_name=dict()
 accuracy=[]
 while ret:
     ret, frame = vs.read()
@@ -73,6 +74,7 @@ while ret:
                 elif xavg<200 and yavg<112.5:
                     direction="downleft"
                 object_pixels = max(w, h)
+
                 distance = (object_size * focal_length) / object_pixels 
                 label = "{}: {:.2f}%  {} {} ".format(CLASSES[idx], confidence * 100,direction,distance)
                 text="THE object name is {}:accuracy found is {:.2f}% {} {} ".format(CLASSES[idx], confidence * 100,direction,distance)
@@ -87,7 +89,7 @@ while ret:
                 cv2.putText(frame, label, (startX, y), cv2.FONT_HERSHEY_SIMPLEX, 0.5, COLORS[idx], 2)
         
         frame = imutils.resize(frame,width=400)
-        cv2.imshow('Live detection',frame)
+        # cv2.imshow('Live detection',frame)
         # print(frame.shape)
         if cv2.waitKey(1)==27:
             break
