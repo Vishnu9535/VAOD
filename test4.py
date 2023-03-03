@@ -32,7 +32,7 @@ CLASSES = ["background", "aeroplane", "bicycle", "bird", "boat",
 COLORS = np.random.uniform(0, 255, size=(len(CLASSES), 3))
 
 net = cv2.dnn.readNetFromCaffe('ssd_files/MobileNetSSD_deploy.prototxt', 'ssd_files/MobileNetSSD_deploy.caffemodel')
-object_size = 1
+# object_size = 0
 focal_length = 800.0 
 if use_gpu:
     print("[INFO] setting preferable backend and target to CUDA...")
@@ -69,25 +69,33 @@ while ret:
                 # print(frame.shape)   
                 xavg=(startX+endX)/2
                 yavg=(startY+endY)/2
-                if xavg>200 and yavg>112.5:
+                if xavg>200 and yavg>180:
                     direction="topright"
-                elif xavg>200 and yavg<112.5:
+                elif xavg>200 and yavg<180:
                     direction="downright"
-                elif xavg<200 and yavg>112.5:
+                elif xavg<200 and yavg>180:
                     direction="topleft"
-                elif xavg<200 and yavg<112.5:
+                elif xavg<200 and yavg<180:
                     direction="downleft"
-                object_pixels = max(w, h)
-                distance = (object_size * focal_length) / object_pixels 
+                x_dist=endX-startX
+                print(x_dist)
+                y_dist=endY-startY
+                print(y_dist)
+                object_pixels=max(x_dist,y_dist)
+                object_size=x_dist*y_dist*0.0104166667*0.0104166667
+                mag=1.02
+                sensize=2
+                print(object_pixels)
+                distance = ( mag*sensize* 1.02) /object_size
                 label = "{}: {:.2f}%  {} {} ".format(CLASSES[idx], confidence * 100,direction,distance)
-                text="THE object name is {}:accuracy found is {:.2f}% {} {} ".format(CLASSES[idx], confidence * 100,direction,distance)
+                text="THE object name is {}:accuracy found is {:.2f}% {} distance is  {} ".format(CLASSES[idx], confidence * 100,direction,distance)
                 print(text)
-                eng=pyttsx3.init()
-                rate = eng.getProperty('rate')
-                eng.setProperty('rate', rate-15)
-                eng.say(text)
-                eng.runAndWait()
-                time.sleep(0.5)
+                # eng=pyttsx3.init()
+                # rate = eng.getProperty('rate')
+                # eng.setProperty('rate', rate-15)
+                # eng.say(text)
+                # eng.runAndWait()
+                # time.sleep(0.5)
                 # # language = 'en'
                 # audio = gTTS(text=text, lang=language, slow=False)
                 # audio.save("x.mp3")
@@ -99,8 +107,8 @@ while ret:
                 cv2.putText(frame, label, (startX, y), cv2.FONT_HERSHEY_SIMPLEX, 0.5, COLORS[idx], 2)
         
         frame = imutils.resize(frame,width=400)
-        # cv2.imshow('Live detection',frame)
-        cv2.imwrite(f"images/outfile_{next(counter)}.jpg", frame)
+        cv2.imshow('Live detection',frame)
+        # cv2.imwrite(f"images/outfile_{next(counter)}.jpg", frame)
         # cv2.imwrite('hi'+str(i)+'.jpg',frame)
         # print(frame.shape)
         if cv2.waitKey(1)==27:

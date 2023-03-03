@@ -1,1 +1,1 @@
-cv2.imshow('Live detection',frame)
+        cv2.imwrite(f"images/outfile_{next(counter)}.jpg", frame)
