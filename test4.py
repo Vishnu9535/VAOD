@@ -78,9 +78,9 @@ while ret:
                 elif xavg<200 and yavg<180:
                     direction="downleft"
                 x_dist=endX-startX
-                print(x_dist)
+                # print(x_dist)
                 y_dist=endY-startY
-                print(y_dist)
+                # print(y_dist)
                 object_pixels=max(x_dist,y_dist)
                 object_size=x_dist*y_dist*0.0104166667*0.0104166667
                 mag=1.02
