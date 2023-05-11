@@ -10,7 +10,7 @@ confidence_level = 0.5
 fps = FPS().start()
 ret = True
 
-# Set up the object size (in meters)
+# Set up the object size   (in meters)
 object_size = 1  # Example object size of 20cm
 # Set up the camera's focal length (in pixels)
 focal_length = 800.0  # Example focal length for a 640x480 camera
