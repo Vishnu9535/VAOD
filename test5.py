@@ -11,7 +11,7 @@ import pyttsx3 as ts
 import time
 from playsound import playsound
 import os
-import pyttsx
+# import pyttsx
 import matplotlib as plt
 
 use_gpu = True
@@ -89,7 +89,7 @@ while ret:
                 cv2.putText(frame, label, (startX, y), cv2.FONT_HERSHEY_SIMPLEX, 0.5, COLORS[idx], 2)
         
         frame = imutils.resize(frame,width=400)
-        # cv2.imshow('Live detection',frame)
+        cv2.imshow('Live detection',frame)
         # print(frame.shape)
         if cv2.waitKey(1)==27:
             break

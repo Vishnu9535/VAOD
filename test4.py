@@ -1,3 +1,4 @@
+from gtts import gTTS
 from imutils.video import FPS
 import numpy as np
 import argparse
@@ -44,7 +45,7 @@ print("[INFO] accessing video stream...")
 if live_video:
     vs = cv2.VideoCapture(0)
 else:
-    vs = cv2.VideoCapture('test1.mp4')
+    vs = cv2.VideoCapture('sample5.mp4')
 object_name=[]
 accuracy=[]
 while ret:
@@ -85,29 +86,27 @@ while ret:
                 object_size=x_dist*y_dist*0.0104166667*0.0104166667
                 mag=1.02
                 sensize=2
-                print(object_pixels)
+                # print(object_pixels)
                 distance = ( mag*sensize* 1.02) /object_size
                 label = "{}: {:.2f}%  {} {} ".format(CLASSES[idx], confidence * 100,direction,distance)
                 text="THE object name is {}:accuracy found is {:.2f}% {} distance is  {} ".format(CLASSES[idx], confidence * 100,direction,distance)
                 print(text)
-                # eng=pyttsx3.init()
-                # rate = eng.getProperty('rate')
-                # eng.setProperty('rate', rate-15)
-                # eng.say(text)
-                # eng.runAndWait()
-                # time.sleep(0.5)
-                # # language = 'en'
+                eng=pyttsx3.init()
+                rate = eng.getProperty('rate')
+                eng.setProperty('rate', rate-15)
+                eng.say(text)
+                eng.runAndWait()
+                time.sleep(0.5)
+                # language = 'en'
                 # audio = gTTS(text=text, lang=language, slow=False)
                 # audio.save("x.mp3")
                 # playsound("x.mp3")
               
                 cv2.rectangle(frame, (startX, startY), (endX, endY), COLORS[idx], 2)
-
                 y = startY - 15 if startY - 15 > 15 else startY + 15
                 cv2.putText(frame, label, (startX, y), cv2.FONT_HERSHEY_SIMPLEX, 0.5, COLORS[idx], 2)
-        
         frame = imutils.resize(frame,width=400)
-        cv2.imshow('Live detection',frame)
+        # cv2.imshow('Live detection',frame)
         # cv2.imwrite(f"images/outfile_{next(counter)}.jpg", frame)
         # cv2.imwrite('hi'+str(i)+'.jpg',frame)
         # print(frame.shape)
