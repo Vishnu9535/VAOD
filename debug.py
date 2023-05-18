@@ -108,7 +108,6 @@ def model():
                     # sensize=2
                     # # print(object_pixels)
                     # distance = ( mag*sensize* 1.02) /object_size
-
                     label = "{}: {:.2f}%  {}  {:.2f}m".format(CLASSES[idx], confidence * 100,direction,distance)
                     text="THE object name is {}:accuracy found is {:.2f}% {} distance is  {:.2f}m ".format(CLASSES[idx], confidence * 100,direction,distance)
                     print(text)
