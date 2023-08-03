@@ -145,6 +145,9 @@ class ObjectDetection:
                f"{direction} distance is {distance:.2f}m"
         print(text)
 
+def main():
+    detector = ObjectDetection()
+
 
 if __name__ == "__main__":
-    detector = ObjectDetection()
+    main()
