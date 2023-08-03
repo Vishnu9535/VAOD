@@ -40,7 +40,8 @@ def final_model():
                         class_of_object = int(detect[0, 0, i, 1])
                         bounding_box = detect[0, 0, i, 3:7] * np.array([w, h, w, h])
                         (topleft_x, topleft_y, downright_x, downright_y) = bounding_box.astype("int")
-                        label = f"{objectlist[class_of_object]} {confidence * 100:.2f}"
+
+                        label = f"{objectlist[class_of_object]} {confidence * 100:.2f}% "
                         cv2.rectangle(frame, (topleft_x, topleft_y), (downright_x, downright_y), COLORS[class_of_object], 2)
                         y = topleft_y - 15 if topleft_y - 15 > 15 else topleft_y + 15
                         cv2.putText(frame, label, (topleft_x, y), cv2.FONT_HERSHEY_SIMPLEX, 0.5, COLORS[class_of_object], 2)
