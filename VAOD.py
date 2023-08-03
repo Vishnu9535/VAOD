@@ -2,7 +2,6 @@ from imutils.video import FPS
 from object_size import calculate_object_size
 import cv2
 import imutils  
-import math
 import numpy as np
 from audio import audio_output
 from direction import get_direction
@@ -30,8 +29,8 @@ class ObjectDetection:
 
     def detect_objects(self):
         """
-        It detect objects using the deep learning model
-        shows the video feed with object detections and gives audio output for each frame of the video.
+        It detects objects using the deep learning model
+        Gives the video  with object detections and gives audio output for each frame of the video.
         """
         fps = FPS().start()
         status = True
@@ -62,7 +61,7 @@ class ObjectDetection:
                         bounding_box_area = (downright_x - topleft_x) * (downright_y - topleft_y) * 0.0002645833 * 0.0002645833
                         object_size = calculate_object_size(self.objectlist[class_of_object])
 
-                        distance = calculate_distance(downright_x - topleft_x, downright_y - topleft_y, object_size, bounding_box_area, xavg)
+                        distance = calculate_distance(object_size, bounding_box_area, xavg)
 
                         label = f"{self.objectlist[class_of_object]}: {confidence * 100:.2f}%  {direction}  {distance:.2f}m"
                         self.print_detection_text(self.objectlist[class_of_object], confidence, direction, distance)
@@ -84,13 +83,7 @@ class ObjectDetection:
     
     def print_detection_text(self, object_class, confidence, direction, distance):
         """
-        Print the detection information to the console.
-
-        Args:
-            object_class (str): Class label of the detected object.
-            confidence (float): Confidence level of the detected object.
-            direction (str): Direction of the detected object.
-            distance (float): Distance of the detected object from the camera.
+        Prints the detection information to the console.
         """
         text = f"THE object name is {object_class}: accuracy found is {confidence * 100:.2f}% " \
                f"{direction} distance is {distance:.2f}m"

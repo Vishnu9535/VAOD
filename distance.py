@@ -2,7 +2,7 @@ import math
 
 focal_length = 0.026  
 
-def calculate_distance(x_dist, y_dist, object_size, bounding_box_area, xavg):
+def calculate_distance(object_size, bounding_box_area, xavg):
         """
         Calculate the distance of the detected object from the camera.
         Distance of the detected object from the camera.
