@@ -36,8 +36,7 @@ def model():
     #         "dog", "horse", "motorbike", "person", "pottedplant", "sheep",
     #         "sofa", "train", "tvmonitor"}
     COLORS = np.random.uniform(0, 255, size=(len(CLASSES), 3))
-
-    net = cv2.dnn.readNetFromCaffe('ssd_files/MobileNetSSD_deploy.prototxt', 'ssd_files/MobileNetSSD_deploy.caffemodel')
+    net = cv2.dnn.readNetFromCaffe('modelfiles/cnnmodule.prototxt', 'modelfiles/Mobilenetssd.model')
     # object_size = 0
     focal_length = 800.0 
     if use_gpu:
@@ -50,7 +49,7 @@ def model():
     if live_video:
         vs = cv2.VideoCapture(0)
     else:
-        vs = cv2.VideoCapture('test1.mp4')
+        vs = cv2.VideoCapture('videos/test1.mp4')
     object_name=[]
     accuracy=[]
     while ret:
@@ -85,7 +84,7 @@ def model():
                         direction="downleft"
                     # print("{}   {}".format(endX,startX))
                     x_dist=endX-startX
-                    print(startX)
+                    # print(startX)
                     y_dist=endY-startY
                     # print(y_dist)
                     # object_pixels=max(x_dist,y_dist)
@@ -95,10 +94,14 @@ def model():
                     elif(CLASSES[idx] == "car"):
                         object_size=10
                     elif(CLASSES[idx] == "person"):
-                        object_size=1.8*0.4         
+                        object_size=1.8*0.4
+                    elif(CLASSES[idx] == "motorbike"):    
+                        object_size=2.16*1.27   
+                    elif(CLASSES[idx] == "sofa"):    
+                        object_size=1.6002*0.6858
                     else:
-                        object_size=5 
-                    focal_length=0.005  
+                        object_size=5 *5
+                    focal_length=0.026  
                     distance_p = (object_size * focal_length) / math.sqrt(bounding_box_area)
                     width=xavg*0.0002645833
 
@@ -111,10 +114,10 @@ def model():
                     label = "{}: {:.2f}%  {}  {:.2f}m".format(CLASSES[idx], confidence * 100,direction,distance)
                     text="THE object name is {}:accuracy found is {:.2f}% {} distance is  {:.2f}m ".format(CLASSES[idx], confidence * 100,direction,distance)
                     print(text)
-                    # eng=pyttsx3.init()
-                    # rate = eng.getProperty('rate')
-                    # eng.setProperty('rate', rate-15)
-                    # eng.say(text)
+                    eng=pyttsx3.init()
+                    rate = eng.getProperty('rate')
+                    eng.setProperty('rate', rate-15)
+                    eng.say(text)
                     # eng.runAndWait()
                     # time.sleep(0.5)
                     # # language = 'en'
@@ -126,13 +129,12 @@ def model():
                     y = startY - 15 if startY - 15 > 15 else startY + 15
                     cv2.putText(frame, label, (startX, y), cv2.FONT_HERSHEY_SIMPLEX, 0.5, COLORS[idx], 2)
             frame = imutils.resize(frame,width=400)
-            # cv2.imshow('Live detection',frame)
-            cv2.imwrite(f"images/outfile_{next(counter)}.jpg", frame)
+            cv2.imshow('Live detection',frame)
+            # cv2.imwrite(f"images/outfile_{next(counter)}.jpg", frame)
             # cv2.imwrite('hi'+str(i)+'.jpg',frame)
             # print(frame.shape)
             if cv2.waitKey(1)==27:
                 break
-
             fps.update()
     fps.stop()
 model()
