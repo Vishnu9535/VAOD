@@ -11,7 +11,6 @@ class ObjectDetection:
         """
         Initializing the class.
         """
-        # self.gpu = use_gpu
         self.confidence_level = 0.5
         self.objectlist = [
             "background", "aeroplane", "bicycle", "bird", "boat",
