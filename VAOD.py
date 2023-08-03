@@ -1,16 +1,13 @@
-from imutils.video import FPS
-from object_size import calculate_object_size
 import cv2
 import imutils  
+import math
 import numpy as np
+from imutils.video import FPS
 from audio import audio_output
-from direction import get_direction
-from distance import calculate_distance
-
 class ObjectDetection:
     def __init__(self):
         """
-        Initialize the ObjectDetection class.
+        Initializing the class.
         """
         # self.gpu = use_gpu
         self.confidence_level = 0.5
@@ -23,14 +20,12 @@ class ObjectDetection:
 
         self.COLORS = np.random.uniform(0, 255, size=(len(self.objectlist), 3))
         self.load_model = cv2.dnn.readNetFromCaffe('modelfiles/cnnmodule.prototxt', 'modelfiles/Mobilenetssd.model')
-        
-        self.load_model.setPreferableBackend(cv2.dnn.DNN_BACKEND_CUDA)
-        self.load_model.setPreferableTarget(cv2.dnn.DNN_TARGET_CUDA)
+        self.focal_length = 0.026  
 
     def detect_objects(self):
         """
-        It detects objects using the deep learning model
-        Gives the video  with object detections and gives audio output for each frame of the video.
+        Detects objects using the deep learning model.
+        outputs the video with object detections and provides audio output for each frame.
         """
         fps = FPS().start()
         status = True
@@ -56,17 +51,16 @@ class ObjectDetection:
 
                         xavg = (topleft_x + downright_x) / 2
                         yavg = (topleft_y + downright_y) / 2
-                        direction = get_direction(xavg, yavg)
 
                         bounding_box_area = (downright_x - topleft_x) * (downright_y - topleft_y) * 0.0002645833 * 0.0002645833
-                        object_size = calculate_object_size(self.objectlist[class_of_object])
+                        object_size = self.calculate_object_size(self.objectlist[class_of_object])
+                        direction = self.get_direction(xavg, yavg)
 
-                        distance = calculate_distance(object_size, bounding_box_area, xavg)
+                        distance = self.calculate_distance(object_size, bounding_box_area, xavg)
 
                         label = f"{self.objectlist[class_of_object]}: {confidence * 100:.2f}%  {direction}  {distance:.2f}m"
-                        self.print_detection_text(self.objectlist[class_of_object], confidence, direction, distance)
+                        self.print_output_text(self.objectlist[class_of_object], confidence, direction, distance)
                         audio_output(label)
-
                         cv2.rectangle(frame, (topleft_x, topleft_y), (downright_x, downright_y), self.COLORS[class_of_object], 2)
                         y = topleft_y - 15 if topleft_y - 15 > 15 else topleft_y + 15
                         cv2.putText(frame, label, (topleft_x, y), cv2.FONT_HERSHEY_SIMPLEX, 0.5, self.COLORS[class_of_object], 2)
@@ -80,10 +74,52 @@ class ObjectDetection:
                 fps.update()
 
         fps.stop()
-    
-    def print_detection_text(self, object_class, confidence, direction, distance):
+
+
+    def calculate_object_size(self, object_class):
         """
-        Prints the detection information to the console.
+        Calculates the size of the detected object based on the object detected.
+        """
+        if object_class == "bus":
+            return 36
+        elif object_class == "car":
+            return 10
+        elif object_class == "person":
+            return 1.8 * 0.4
+        elif object_class == "motorbike":
+            return 2.16 * 1.27
+        elif object_class == "sofa":
+            return 1.6002 * 0.6858
+        else:
+            return 5 * 5
+
+    def calculate_distance(self,object_size, bounding_box_area, xavg):
+        """
+        returns the distance of the detected object from the camera using the principle of parllax
+        """
+        distance_p = (object_size * self.focal_length) / math.sqrt(bounding_box_area)
+        width = xavg * 0.0002645833
+        distance = math.sqrt(((distance_p * distance_p) + (width * width)))
+        return distance
+
+    def get_direction(self, xavg, yavg):
+        """
+            gives the direction of the detected object relative to the camera.
+        """
+        direction = "unknown"
+        if xavg > 200 and yavg > 180:
+            direction = "topright"
+        elif xavg > 200 and yavg < 180:
+            direction = "downright"
+        elif xavg < 200 and yavg > 180:
+            direction = "topleft"
+        elif xavg < 200 and yavg < 180:
+            direction = "downleft"
+        return direction
+
+    def print_output_text(self, object_class, confidence, direction, distance):
+        """
+        Prints the final output.
         """
         text = f"THE object name is {object_class}: accuracy found is {confidence * 100:.2f}% " \
                f"{direction} distance is {distance:.2f}m"
