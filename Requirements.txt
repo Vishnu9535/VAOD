@@ -1,0 +1,7 @@
+Install All the modules mentioned below 
+install imutils
+install opencv
+install numpy
+install tensorflow
+install pyttsx3
+install pandas
