@@ -1,6 +1,6 @@
 VAOD - Voice Assisted Object_Detection for Visully impared
 
-VAODfiles contains different files related to the model
+VAODFILES contains different files related to the model
     audio.py gives the audio output 
     derection.py gives the direction of object 
     model.py is the implimentation of the Mobilenetssd model
