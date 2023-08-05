@@ -12,4 +12,4 @@ videos folder consist of few sample videos
 VAOD.py the implimets the final object_detection model  which gives
 direction as well as distance of the objects detected from the camera input
 
-Run VAOD.py
+Run VAOD.py to run the final model
